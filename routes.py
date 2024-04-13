@@ -1,7 +1,6 @@
 from app import app
 from db import db
 from flask import redirect, render_template, request, session
-from os import getenv
 from sqlalchemy.sql import text
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -46,9 +45,11 @@ def logout():
 @app.route("/create_account",methods=["POST"])
 def create_account():
     username = request.form["username"]
-    password = request.form["password"]
-    hash_value = generate_password_hash(password)
-    sql = text("INSERT INTO users (username, password) VALUES (:username, :password)")
-    db.session.execute(sql, {"username":username, "password":hash_value})
-    db.session.commit()
+    password1 = request.form["password1"]
+    password2 = request.form["password2"]
+    if password1==password2:
+        hash_value = generate_password_hash(password1)
+        sql = text("INSERT INTO users (username, password) VALUES (:username, :password)")
+        db.session.execute(sql, {"username":username, "password":hash_value})
+        db.session.commit()
     return redirect("/")
