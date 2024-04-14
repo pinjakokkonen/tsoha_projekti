@@ -9,8 +9,14 @@
 <body>
     <h1>Etusivu</h1>
     <p>Tervetuloa sovellukseen!<p>
+    {% if session.username %}
+    <p>Olet kirjautunut nimellä {{ session.username }}</p>
+    <a href="/logout">Kirjaudu ulos</a>
+    {% else %}
     <a href="create">Luo tunnus</a> |
     <a href="form">Kirjaudu</a>
+    <br>
+    {% endif %}
 </body>
 
 </html>

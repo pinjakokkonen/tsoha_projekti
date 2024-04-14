@@ -7,10 +7,10 @@
 </head>
 
 <body>
-    <form action="/create_account" method="POST">
+    <form action="/create_account" method="POST" onsubmit="return check(this)">
     <p>Tunnus:<br>
     <input type="text" name="username"></p>
-    <p>Salasana:<br>
+    <p>Salasana (vähintään 8 merkkiä):<br>
     <input type="password" name="password1"></p>
     <p>Salasana uudelleen:<br>
     <input type="password" name="password2"></p>
@@ -20,5 +20,19 @@
     <a href="/">Etusivu</a> |
     <a href="form">Kirjaudu</a>
 </body>
+
+<script>
+  function check(form) {
+      if (form.password1.value != form.password2.value) {
+          alert("Salasanat eroavat");
+          return false;
+      }
+      if (form.password1.value.length < 8) {
+          alert("Salasana on liian lyhyt");
+          return false;
+      }
+      return true;
+  }
+</script>
 
 </html>

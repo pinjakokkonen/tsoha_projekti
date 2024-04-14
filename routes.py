@@ -1,8 +1,6 @@
 from app import app
-from db import db
-from flask import redirect, render_template, request, session
-from sqlalchemy.sql import text
-from werkzeug.security import check_password_hash, generate_password_hash
+from flask import redirect, render_template, request
+import users
 
 @app.route("/")
 def index():
@@ -20,26 +18,15 @@ def create():
 def login():
     username = request.form["username"]
     password = request.form["password"]
-    # TODO: check username and password
-    sql = text("SELECT id, password FROM users WHERE username=:username")
-    result = db.session.execute(sql, {"username":username})
-    user = result.fetchone()    
-    if not user:
-        # TODO: invalid username
-        pass
+    # check username and password
+    if users.login(username, password):
+        return redirect("/")
     else:
-        hash_value = user.password
-        if check_password_hash(hash_value, password):
-            # TODO: correct username and password
-            session["username"] = username
-        else:
-            # TODO: invalid password
-            pass
-    return redirect("/form")
+        return render_template("error.html", message="Väärä tunnus tai salasana")
 
 @app.route("/logout")
 def logout():
-    del session["username"]
+    users.logout()
     return redirect("/")
 
 @app.route("/create_account",methods=["POST"])
@@ -48,8 +35,12 @@ def create_account():
     password1 = request.form["password1"]
     password2 = request.form["password2"]
     if password1==password2:
-        hash_value = generate_password_hash(password1)
-        sql = text("INSERT INTO users (username, password) VALUES (:username, :password)")
-        db.session.execute(sql, {"username":username, "password":hash_value})
-        db.session.commit()
-    return redirect("/")
+        if len(password1)>7:
+            if users.create_account(username, password1):
+                return redirect("/")
+            else:
+                return render_template("error.html", message="Tunnuksen luominen epäonnistui")
+        else:
+            return render_template("error.html", message="Salasana on liian lyhyt")
+    else:
+        return render_template("error.html", message="Salasanat eroavat")
