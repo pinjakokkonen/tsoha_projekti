@@ -12,11 +12,32 @@
     {% if session.username %}
     <p>Olet kirjautunut nimellä {{ session.username }}</p>
     <a href="/logout">Kirjaudu ulos</a>
+    <!--tee linkki omat kurssit-->
     {% else %}
     <a href="create">Luo tunnus</a> |
     <a href="form">Kirjaudu</a>
-    <br>
     {% endif %}
+    <p>Kurssi tarjonta:</p>
+    <table>
+    <tr>
+      <th>Kurssi</th>
+      <th>Aika</th>
+      <th>Paikka</th>
+      {% if session.username %}
+      <th>Ilmoittautuminen</th>
+      {% endif %}
+    </tr>
+    {% for course in course_list %} 
+    <tr>
+      <td>{{course.course_name}}</td>
+      <td>{{course.event_time}}</td>
+      <td>{{course.place}}</td>
+      {% if session.username %}
+      <td><a href="/enroll/{{course.id}}">Ilmoittaudu</a></td>
+      {% endif %}
+    </tr>
+    {% endfor %} 
+    </table>
 </body>
 
 </html>

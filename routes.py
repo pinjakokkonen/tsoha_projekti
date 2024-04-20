@@ -1,16 +1,18 @@
 from app import app
 from flask import redirect, render_template, request
 import users
+import courses
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    course_list = courses.get_courses() 
+    return render_template("index.html", course_list=course_list) 
 
-@app.route("/form")
+@app.route("/form") #log in
 def form():
     return render_template("form.html")
 
-@app.route("/create")
+@app.route("/create") #register
 def create():
     return render_template("create.html")
 
@@ -44,3 +46,14 @@ def create_account():
             return render_template("error.html", message="Salasana on liian lyhyt")
     else:
         return render_template("error.html", message="Salasanat eroavat")
+    
+@app.route("/enroll/<int:id>", methods=["GET", "POST"])
+def enroll(id):
+    if request.method == "GET":
+        course = courses.get_course(id)
+        return render_template("enroll.html", id=id, course=course)
+    if request.method == "POST":
+        if courses.enroll(id):
+            return redirect("/")
+        else:
+            return render_template("error.html", message="Ilmoittautuminen epäonnistui")
