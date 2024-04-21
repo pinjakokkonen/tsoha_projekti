@@ -5,7 +5,7 @@ import courses
 
 @app.route("/")
 def index():
-    course_list = courses.get_courses() 
+    course_list = courses.get_courses()
     return render_template("index.html", course_list=course_list) 
 
 @app.route("/form") #log in
@@ -57,3 +57,12 @@ def enroll(id):
             return redirect("/")
         else:
             return render_template("error.html", message="Ilmoittautuminen epäonnistui")
+
+@app.route("/unenroll/<int:id>", methods=["GET"])
+def unenroll(id):
+    if request.method == "GET":
+        if courses.undo_enroll(id):
+            return redirect("/")
+        else:
+            return render_template("error.html", message="Ilmoittautumisen peruminen epäonnistui")
+

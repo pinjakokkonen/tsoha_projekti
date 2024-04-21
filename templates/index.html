@@ -32,8 +32,12 @@
       <td>{{course.course_name}}</td>
       <td>{{course.event_time}}</td>
       <td>{{course.place}}</td>
-      {% if session.username %}
-      <td><a href="/enroll/{{course.id}}">Ilmoittaudu</a></td>
+      {% if session.username %}      
+        {% if course.course_id == None %}
+          <td><a href="/enroll/{{course.id}}">Ilmoittaudu</a></td>
+        {% else %}
+          <td><a href="/unenroll/{{course.id}}">Peru ilmoittautuminen</a></td>
+        {% endif %}  
       {% endif %}
     </tr>
     {% endfor %} 
