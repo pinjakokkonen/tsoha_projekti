@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS feedback CASCADE;
+DROP TABLE IF EXISTS enrollments CASCADE;
+DROP TABLE IF EXISTS courses CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY, 
     username TEXT UNIQUE, 
@@ -11,7 +16,8 @@ CREATE TABLE courses (
     instructor TEXT,
     max_enrollments INTEGER,
     event_time TEXT,
-    place TEXT
+    place TEXT,
+    difficulty TEXT
     );
 
 CREATE TABLE enrollments (
@@ -20,7 +26,15 @@ CREATE TABLE enrollments (
     user_id INTEGER REFERENCES users
     );
 
-INSERT INTO courses (sport, course_name, instructor, max_enrollments, event_time, place) VALUES ('tanssi', 'baletti', 'ohjaaja', 5, 'maanantaisin 21.00', 'sali 1');
-INSERT INTO courses (sport, course_name, instructor, max_enrollments, event_time, place) VALUES ('palloilulajit', 'tennis', 'ohjaaja', 5, 'keskiviikkoisin 18.00', 'kenttä 2');
-INSERT INTO courses (sport, course_name, instructor, max_enrollments, event_time, place) VALUES ('palloilulajit', 'jalkapallo', 'ohjaaja', 5, 'sunnuntaisin 17.30', 'kenttä 2');
-INSERT INTO courses (sport, course_name, instructor, max_enrollments, event_time, place) VALUES ('muut', 'kuntosali', 'ohjaaja', 5, 'torstaisin 11.00', 'sali 1');
+CREATE TABLE feedback (
+    id SERIAL PRIMARY KEY,
+    course_id INTEGER REFERENCES courses, 
+    user_id INTEGER REFERENCES users,
+    created_at TIMESTAMP,
+    content TEXT
+    );
+
+INSERT INTO courses (sport, course_name, instructor, max_enrollments, event_time, place, difficulty) VALUES ('tanssi', 'baletti', 'ohjaaja', 5, 'maanantaisin 21.00', 'sali 1', 'alkeistaso');
+INSERT INTO courses (sport, course_name, instructor, max_enrollments, event_time, place, difficulty) VALUES ('palloilulajit', 'tennis', 'ohjaaja', 5, 'keskiviikkoisin 18.00', 'kenttä 2', 'edistyneet');
+INSERT INTO courses (sport, course_name, instructor, max_enrollments, event_time, place, difficulty) VALUES ('palloilulajit', 'jalkapallo', 'ohjaaja', 5, 'sunnuntaisin 17.30', 'kenttä 2', 'keskitaso');
+INSERT INTO courses (sport, course_name, instructor, max_enrollments, event_time, place, difficulty) VALUES ('muut', 'kuntosali', 'ohjaaja', 5, 'torstaisin 11.00', 'sali 1', 'alkeistaso');
