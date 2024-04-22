@@ -1,5 +1,5 @@
 from app import app
-from flask import redirect, render_template, request
+from flask import redirect, render_template, request, session, abort
 import users
 import courses
 
@@ -50,9 +50,13 @@ def create_account():
 @app.route("/enroll/<int:id>", methods=["GET", "POST"])
 def enroll(id):
     if request.method == "GET":
+        if "csrf_token" not in session:
+            abort(403)
         course = courses.get_course(id)
         return render_template("enroll.html", id=id, course=course)
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         if courses.enroll(id):
             return redirect("/")
         else:
@@ -61,6 +65,8 @@ def enroll(id):
 @app.route("/unenroll/<int:id>", methods=["GET"])
 def unenroll(id):
     if request.method == "GET":
+        if "csrf_token" not in session:
+            abort(403)
         if courses.undo_enroll(id):
             return redirect("/")
         else:

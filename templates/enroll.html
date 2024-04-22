@@ -15,6 +15,7 @@
         {{course.place}}<br>
         <input type="submit" value="Ilmoittaudu">
         <input type="hidden" name="id" value="{{ id }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     </form>
     <a href="/">Etusivu</a>
     {% else %}
