@@ -23,15 +23,18 @@
       <th>Kurssi</th>
       <th>Aika</th>
       <th>Paikka</th>
+      <th>Taso</th>
       {% if session.username %}
       <th>Ilmoittautuminen</th>
       {% endif %}
+      <th>Arvostelut</th>
     </tr>
     {% for course in course_list %} 
     <tr>
       <td>{{course.course_name}}</td>
       <td>{{course.event_time}}</td>
       <td>{{course.place}}</td>
+      <td>{{course.difficulty}}</td>
       {% if session.username %}      
         {% if course.course_id == None %}
           <td><a href="/enroll/{{course.id}}">Ilmoittaudu</a></td>
@@ -39,6 +42,7 @@
           <td><a href="/unenroll/{{course.id}}">Peru ilmoittautuminen</a></td>
         {% endif %}  
       {% endif %}
+      <td><a href="/feedback/{{course.id}}">Arvostelut</a></td>
     </tr>
     {% endfor %} 
     </table>

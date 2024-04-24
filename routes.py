@@ -62,13 +62,28 @@ def enroll(id):
         else:
             return render_template("error.html", message="Ilmoittautuminen epäonnistui")
 
-@app.route("/unenroll/<int:id>", methods=["GET"])
+@app.route("/unenroll/<int:id>")
 def unenroll(id):
-    if request.method == "GET":
-        if "csrf_token" not in session:
-            abort(403)
-        if courses.undo_enroll(id):
-            return redirect("/")
-        else:
-            return render_template("error.html", message="Ilmoittautumisen peruminen epäonnistui")
+    if "csrf_token" not in session:
+        abort(403)
+    if courses.undo_enroll(id):
+        return redirect("/")
+    else:
+        return render_template("error.html", message="Ilmoittautumisen peruminen epäonnistui")
 
+@app.route("/feedback/<int:id>", methods=["GET", "POST"])
+def feedbacks(id):
+    if request.method == "GET":
+        course = courses.get_course(id)
+        feedback_list = courses.get_feedback(id)
+        return render_template("feedback.html", id=id, course=course, feedback_list=feedback_list)
+    if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+        content = request.form["content"]
+        if courses.send_feedback(id, content):
+            course = courses.get_course(id)
+            feedback_list = courses.get_feedback(id)
+            return render_template("feedback.html", id=id, course=course, feedback_list=feedback_list)
+        else:
+            return render_template("error.html", message="Arvostelun jättäminen epäonnistui")
