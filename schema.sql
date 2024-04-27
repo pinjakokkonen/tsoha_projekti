@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS feedback CASCADE;
 DROP TABLE IF EXISTS enrollments CASCADE;
 DROP TABLE IF EXISTS courses CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS diary CASCADE;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY, 
@@ -29,6 +30,13 @@ CREATE TABLE enrollments (
 CREATE TABLE feedback (
     id SERIAL PRIMARY KEY,
     course_id INTEGER REFERENCES courses, 
+    user_id INTEGER REFERENCES users,
+    created_at TIMESTAMP,
+    content TEXT
+    );
+
+CREATE TABLE diary (
+    id SERIAL PRIMARY KEY, 
     user_id INTEGER REFERENCES users,
     created_at TIMESTAMP,
     content TEXT

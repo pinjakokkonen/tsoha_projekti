@@ -11,8 +11,9 @@
     <p>Tervetuloa sovellukseen!<p>
     {% if session.username %}
     <p>Olet kirjautunut nimellä {{ session.username }}</p>
-    <a href="/logout">Kirjaudu ulos</a>
+    <a href="/logout">Kirjaudu ulos</a> <br>
     <!--tee linkki omat kurssit-->
+    <a href="/diary">Omat merkinnät</a>
     {% else %}
     <a href="create">Luo tunnus</a> |
     <a href="form">Kirjaudu</a>

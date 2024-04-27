@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Omat merkinnät</title>
+</head>
+
+<body>
+    {% if session.username %}
+    <h3>Omat merkinnät: </h3>
+    {% for notation in diary_list %}
+    {{notation.created_at.strftime("%Y-%m-%d %H:%M")}}<br>
+    {{notation.content}}<hr>
+    {% endfor %}
+    <form action="/diary" method="POST">
+        Uusi merkintä: <br>
+        <textarea name="content" rows="5" col="50"></textarea>
+        <br>
+        <input type="submit" value="Lähetä">
+        <input type="hidden" name="id" value="{{ id }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    </form>
+    {% endif %}
+    <a href="/">Etusivu</a>
+</body>
+
+</html>

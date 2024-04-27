@@ -87,3 +87,22 @@ def feedbacks(id):
             return render_template("feedback.html", id=id, course=course, feedback_list=feedback_list)
         else:
             return render_template("error.html", message="Arvostelun jättäminen epäonnistui")
+
+@app.route("/diary", methods=["GET", "POST"])
+def diary():
+    if request.method == "GET":
+        if "csrf_token" not in session:
+            abort(403)
+        user_id = users.get_user_id()
+        diary_list = courses.get_diary()
+        return render_template("diary.html", user_id=user_id, diary_list=diary_list)
+    if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+        id = users.get_user_id()
+        content = request.form["content"]
+        if courses.send_diary(id, content):
+            diary_list = courses.get_diary()
+            return render_template("diary.html", id=id, diary_list=diary_list)
+        else:
+            return render_template("error.html", message="Merkinnän kirjaaminen epäonnistui")

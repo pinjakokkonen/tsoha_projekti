@@ -35,3 +35,8 @@ def create_account(username, password):
     except:
         return False
     return True
+
+def get_user_id():
+    sql = text("SELECT id FROM users WHERE username=:username")
+    result = db.session.execute(sql, {"username":session["username"]})
+    return result.fetchone()[0]
