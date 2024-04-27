@@ -6,7 +6,9 @@
   <title>Login</title>
 </head>
 
-<body>
+{% extends "layout.html" %}
+  {% block body %}
+    <h3>Kirjadu sisään</h3>
     <form action="/login" method="POST">
     <p>Tunnus:<br>
     <input type="text" name="username"></p>
@@ -17,6 +19,6 @@
     <br>
     <a href="/">Etusivu</a> |
     <a href="create">Luo tunnus</a>
-</body>
+    {% endblock %}
 
 </html>

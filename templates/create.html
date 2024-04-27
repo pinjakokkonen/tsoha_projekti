@@ -6,7 +6,9 @@
   <title>Creating account</title>
 </head>
 
-<body>
+{% extends "layout.html" %}
+  {% block body %}
+    <h3>Luo käyttäjätunnus</h3>
     <form action="/create_account" method="POST" onsubmit="return check(this)">
     <p>Tunnus:<br>
     <input type="text" name="username"></p>
@@ -19,7 +21,7 @@
     <br>
     <a href="/">Etusivu</a> |
     <a href="form">Kirjaudu</a>
-</body>
+    {% endblock %}
 
 <script>
   function check(form) {

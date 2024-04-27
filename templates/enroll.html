@@ -6,7 +6,8 @@
   <title>Ilmoittautuminen</title>
 </head>
 
-<body>
+{% extends "layout.html" %}
+  {% block body %}
     <h3>Ilmoittautuminen</h3>
     <form action="/enroll/{{course.id}}" method="POST">
         {% if session.username %}
@@ -21,6 +22,6 @@
     {% else %}
     <a href="form">Kirjaudu</a>
     {% endif %}
-</body>
+    {% endblock %}
 
 </html>

@@ -6,7 +6,8 @@
   <title>Arvostelut</title>
 </head>
 
-<body>
+{% extends "layout.html" %}
+  {% block body %}
     <h3>Arvostelut: {{course.course_name}}</h3>
     {% for feedback in feedback_list %}
     {{feedback.content}}<hr>
@@ -22,6 +23,6 @@
     </form>
     {% endif %}
     <a href="/">Etusivu</a>
-</body>
+    {% endblock %}
 
 </html>

@@ -6,7 +6,8 @@
   <title>Omat merkinnät</title>
 </head>
 
-<body>
+{% extends "layout.html" %}
+  {% block body %}
     {% if session.username %}
     <h3>Omat merkinnät: </h3>
     {% for notation in diary_list %}
@@ -23,6 +24,6 @@
     </form>
     {% endif %}
     <a href="/">Etusivu</a>
-</body>
+    {% endblock %}
 
 </html>

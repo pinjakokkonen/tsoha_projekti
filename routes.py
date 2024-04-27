@@ -1,5 +1,5 @@
 from app import app
-from flask import redirect, render_template, request, session, abort
+from flask import redirect, render_template, request, session, abort, flash
 import users
 import courses
 
@@ -39,6 +39,7 @@ def create_account():
     if password1==password2:
         if len(password1)>7:
             if users.create_account(username, password1):
+                flash("Käyttäjätunnuksen luominen onnistui")
                 return redirect("/")
             else:
                 return render_template("error.html", message="Tunnuksen luominen epäonnistui")
