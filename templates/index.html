@@ -26,6 +26,7 @@
       <th>Aika</th>
       <th>Paikka</th>
       <th>Taso</th>
+      <th>Paikkamäärä</th>
       {% if session.username %}
       <th>Ilmoittautuminen</th>
       {% endif %}
@@ -37,6 +38,7 @@
       <td>{{course.event_time}}</td>
       <td>{{course.place}}</td>
       <td>{{course.difficulty}}</td>
+      <td>{{course.enroll_count}}/{{course.max_enrollments}}</td>
       {% if session.username %}      
         {% if course.course_id == None %}
           <td><a href="/enroll/{{course.id}}">Ilmoittaudu</a></td>

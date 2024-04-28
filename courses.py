@@ -6,27 +6,34 @@ import users
 def get_courses():
     if session.get("username"):
         user_id = users.get_user_id()
-        sql = text("SELECT C.id, C.course_name, C.event_time, C.place, C.difficulty, E.course_id FROM courses C LEFT JOIN enrollments E ON C.id=E.course_id AND E.user_id=:user_id")
+        sql = text("""SELECT O.id,O.course_name, O.max_enrollments, O.event_time, O.place, O.difficulty, O.course_id, EC.enroll_count FROM 
+                    (SELECT C.id, C.course_name, C.max_enrollments, C.event_time, C.place, C.difficulty, E.course_id
+                    FROM courses C LEFT JOIN enrollments E ON C.id=E.course_id AND E.user_id=:user_id) O,
+                    (SELECT C.id, COUNT(E.course_id) AS enroll_count 
+                    FROM courses C LEFT JOIN enrollments E ON C.id=E.course_id GROUP BY C.id ) as EC 
+                    WHERE O.id=EC.id""")
         result = db.session.execute(sql, {"user_id":user_id})
         return result.fetchall()
     else:
-        sql = text("SELECT id, course_name, event_time, place, difficulty FROM courses")
+        sql = text("SELECT C.id, C.course_name, C.max_enrollments, C.event_time, C.place, C.difficulty, COUNT(E.course_id) AS enroll_count FROM courses C LEFT JOIN enrollments E ON C.id=E.course_id GROUP BY C.id ORDER BY C.id")
         result = db.session.execute(sql)
         return result.fetchall()
 
 def get_course(id):
-    sql = text("SELECT id, course_name, event_time, place FROM courses WHERE id=:id")
+    sql = text("SELECT id, course_name, max_enrollments, event_time, place, difficulty FROM courses WHERE id=:id")
     result = db.session.execute(sql, {"id":id})
     return result.fetchone()
 
 def enroll(id):
-    sql = text("SELECT id FROM users WHERE username=:username")
-    result = db.session.execute(sql, {"username":session["username"]})
-    user_id = result.fetchone()[0]
+    user_id = users.get_user_id()
     sql = text("SELECT COUNT(course_id) FROM enrollments WHERE user_id=:user_id AND course_id=:course_id")
     result = db.session.execute(sql, {"course_id":id, "user_id":user_id})
     counter = result.fetchone()[0]
-    if counter<1:
+    sql = text("SELECT COUNT(course_id) FROM enrollments WHERE course_id=:course_id")
+    result = db.session.execute(sql, {"course_id":id})
+    max_enroll = result.fetchone()[0]
+    course = get_course(id)
+    if counter<1 and max_enroll<course.max_enrollments:
         try:
             sql = text("INSERT INTO enrollments (course_id, user_id) VALUES (:course_id, :user_id)")
             db.session.execute(sql, {"course_id":id, "user_id":user_id})
