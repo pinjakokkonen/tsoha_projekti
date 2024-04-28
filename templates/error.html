@@ -1,1 +1,7 @@
+<script>
+    function go_back(){window.location.href = localStorage.getItem("prev_page")};
+</script>
+
 Virhe: {{ message }}
+<br><br>
+<button onclick="go_back()">Takaisin</button>

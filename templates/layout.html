@@ -5,6 +5,11 @@
   <title>Liikunta sovellus</title>
 </head>
 
+<script>
+  window.onload=function(){localStorage.setItem("prev_page", location.href)}
+  function go_back(){window.location.href = localStorage.getItem("prev_page")};
+</script>
+
 <h1>Liikunta sovellus</h1>
 <hr>
 {% with messages = get_flashed_messages() %}
