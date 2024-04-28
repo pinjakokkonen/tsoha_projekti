@@ -85,6 +85,7 @@ def feedbacks(id):
         if courses.send_feedback(id, content):
             course = courses.get_course(id)
             feedback_list = courses.get_feedback(id)
+            flash("Arvostelun tallennus onnistui")
             return render_template("feedback.html", id=id, course=course, feedback_list=feedback_list)
         else:
             return render_template("error.html", message="Arvostelun jättäminen epäonnistui")
@@ -102,8 +103,12 @@ def diary():
             abort(403)
         id = users.get_user_id()
         content = request.form["content"]
-        if courses.send_diary(id, content):
-            diary_list = courses.get_diary()
-            return render_template("diary.html", id=id, diary_list=diary_list)
+        if content!="":
+            if courses.send_diary(id, content):
+                diary_list = courses.get_diary()
+                flash("Merkinnän tallennus onnistui")
+                return render_template("diary.html", id=id, diary_list=diary_list)
+            else:
+                return render_template("error.html", message="Merkinnän kirjaaminen epäonnistui")
         else:
             return render_template("error.html", message="Merkinnän kirjaaminen epäonnistui")

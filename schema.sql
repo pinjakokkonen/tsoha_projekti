@@ -12,13 +12,13 @@ CREATE TABLE users (
 
 CREATE TABLE courses (
     id SERIAL PRIMARY KEY, 
-    sport TEXT,
-    course_name TEXT, 
+    sport TEXT NOT NULL,
+    course_name TEXT NOT NULL, 
     instructor TEXT,
-    max_enrollments INTEGER,
-    event_time TEXT,
-    place TEXT,
-    difficulty TEXT
+    max_enrollments INTEGER NOT NULL,
+    event_time TEXT NOT NULL,
+    place TEXT NOT NULL,
+    difficulty TEXT NOT NULL
     );
 
 CREATE TABLE enrollments (
@@ -32,14 +32,14 @@ CREATE TABLE feedback (
     course_id INTEGER REFERENCES courses, 
     user_id INTEGER REFERENCES users,
     created_at TIMESTAMP,
-    content TEXT
+    content TEXT NOT NULL
     );
 
 CREATE TABLE diary (
     id SERIAL PRIMARY KEY, 
     user_id INTEGER REFERENCES users,
     created_at TIMESTAMP,
-    content TEXT
+    content TEXT NOT NULL
     );
 
 INSERT INTO courses (sport, course_name, instructor, max_enrollments, event_time, place, difficulty) VALUES ('tanssi', 'baletti', 'ohjaaja', 5, 'maanantaisin 21.00', 'sali 1', 'alkeistaso');
