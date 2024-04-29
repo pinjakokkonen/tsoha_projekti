@@ -17,6 +17,7 @@ def login(username, password):
             # correct username and password
             session["username"] = username
             session["csrf_token"] = secrets.token_hex(16)
+            session["user_id"] = user.id
             return True
         else:
             # invalid password
@@ -25,6 +26,7 @@ def login(username, password):
 def logout():
     del session["username"]
     del session["csrf_token"]
+    del session["user_id"]
 
 def create_account(username, password):
     hash_value = generate_password_hash(password)
@@ -35,8 +37,3 @@ def create_account(username, password):
     except:
         return False
     return True
-
-def get_user_id():
-    sql = text("SELECT id FROM users WHERE username=:username")
-    result = db.session.execute(sql, {"username":session["username"]})
-    return result.fetchone()[0]

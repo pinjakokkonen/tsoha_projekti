@@ -82,26 +82,29 @@ def feedbacks(id):
         if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
         content = request.form["content"]
-        if courses.send_feedback(id, content):
-            course = courses.get_course(id)
-            feedback_list = courses.get_feedback(id)
-            flash("Arvostelun tallennus onnistui")
-            return render_template("feedback.html", id=id, course=course, feedback_list=feedback_list)
+        if content!="":
+            if courses.send_feedback(id, content):
+                course = courses.get_course(id)
+                feedback_list = courses.get_feedback(id)
+                flash("Arvostelun tallennus onnistui")
+                return render_template("feedback.html", id=id, course=course, feedback_list=feedback_list)
+            else:
+                return render_template("error.html", message="Arvostelun jättäminen epäonnistui")
         else:
-            return render_template("error.html", message="Arvostelun jättäminen epäonnistui")
+            return render_template("error.html", message="Arvostelun jättäminen epäonnistui, kirjoita lähetettävä arvostelu")
 
 @app.route("/diary", methods=["GET", "POST"])
 def diary():
     if request.method == "GET":
         if "csrf_token" not in session:
             abort(403)
-        user_id = users.get_user_id()
+        user_id = session["user_id"]
         diary_list = courses.get_diary()
         return render_template("diary.html", user_id=user_id, diary_list=diary_list)
     if request.method == "POST":
         if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
-        id = users.get_user_id()
+        id = session["user_id"]
         content = request.form["content"]
         if content!="":
             if courses.send_diary(id, content):
@@ -111,4 +114,4 @@ def diary():
             else:
                 return render_template("error.html", message="Merkinnän kirjaaminen epäonnistui")
         else:
-            return render_template("error.html", message="Merkinnän kirjaaminen epäonnistui")
+            return render_template("error.html", message="Merkinnän kirjaaminen epäonnistui, kirjoita tallennettava merkintä")
