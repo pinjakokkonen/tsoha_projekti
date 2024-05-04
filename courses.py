@@ -100,3 +100,20 @@ def remove_course(id):
     except:
         return False
     return True
+
+def search(course):
+    if session.get("username"):
+        user_id = session["user_id"]
+        sql = text("""SELECT O.id,O.course_name, O.max_enrollments, O.event_time, O.place, O.difficulty, O.course_id, EC.enroll_count FROM 
+                        (SELECT C.id, C.course_name, C.max_enrollments, C.event_time, C.place, C.difficulty, E.course_id
+                        FROM courses C LEFT JOIN enrollments E ON C.id=E.course_id AND E.user_id=:user_id) O,
+                        (SELECT C.id, COUNT(E.course_id) AS enroll_count 
+                        FROM courses C LEFT JOIN enrollments E ON C.id=E.course_id GROUP BY C.id ) as EC 
+                        WHERE O.id=EC.id AND O.course_name LIKE :course""")
+        result = db.session.execute(sql, {"user_id":user_id, "course":"%"+course+"%"})
+        return result.fetchall()
+    else:
+        sql = text("""SELECT C.id, C.course_name, C.max_enrollments, C.event_time, C.place, C.difficulty, COUNT(E.course_id) AS enroll_count 
+                   FROM courses C LEFT JOIN enrollments E ON C.id=E.course_id WHERE C.course_name LIKE :course GROUP BY C.id ORDER BY C.id""")
+        result = db.session.execute(sql, {"course":"%"+course+"%"})
+        return result.fetchall()

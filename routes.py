@@ -151,3 +151,10 @@ def remove_course(id):
         return redirect("/")
     else:
         return render_template("error.html", message="Kurssin poistaminen epäonnistui")
+
+@app.route("/search")
+def search():
+    course = request.args["course"]
+    course_list = courses.search(course)
+    allow = users.check_rights()
+    return render_template("index.html", course_list=course_list, allow=allow) 
