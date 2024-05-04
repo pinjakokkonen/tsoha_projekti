@@ -82,3 +82,12 @@ def send_diary(id, content):
         print(error)
         return False
     return True
+
+def add_course(sport, course_name, instructor, max_enrollments, event_time, place, difficulty):
+    try:
+        sql = text("INSERT INTO courses (sport, course_name, instructor, max_enrollments, event_time, place, difficulty) VALUES (:sport, :course_name, :instructor, :max_enrollments, :event_time, :place, :difficulty)")
+        db.session.execute(sql, {"sport":sport, "course_name":course_name, "instructor":instructor, "max_enrollments":max_enrollments, "event_time":event_time, "place":place, "difficulty":difficulty})
+        db.session.commit()
+    except:
+        return False
+    return True

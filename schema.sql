@@ -7,7 +7,8 @@ DROP TABLE IF EXISTS diary CASCADE;
 CREATE TABLE users (
     id SERIAL PRIMARY KEY, 
     username TEXT UNIQUE, 
-    password TEXT
+    password TEXT,
+    rights TEXT
     );
 
 CREATE TABLE courses (

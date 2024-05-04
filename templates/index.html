@@ -13,8 +13,13 @@
     {% if session.username %}
     <p>Olet kirjautunut nimellä {{ session.username }}</p>
     <a href="/logout">Kirjaudu ulos</a> <br>
-    <!--tee linkki omat kurssit-->
-    <a href="/diary">Omat merkinnät</a>
+    {% if allow %}
+    <p>Sinulla on admin oikeudet</p>
+    <a href="/add_course">Lisää kurssi</a> <br>
+    {% else %}
+    <a href="/">Omat kurssit</a> <br>
+    <a href="/diary">Omat merkinnät</a> <br>
+    {% endif %}
     {% else %}
     <a href="create">Luo tunnus</a> |
     <a href="form">Kirjaudu</a>

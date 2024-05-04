@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Adding course</title>
+</head>
+
+{% extends "layout.html" %}
+  {% block body %}
+    <h3>Lisää kurssi</h3>
+    <form action="/add_course" method="POST">
+    <p>Lajityyppi:<br>
+    <input type="text" name="sport"></p>
+    <p>Kurssin nimi:<br>
+    <input type="text" name="course_name"></p>
+    <p>Ohjaaja:<br>
+    <input type="text" name="instructor"></p>
+    <p>Maksimi osallistujamäärä:<br>
+    <input type="number" min="10" max="100" name="max_enrollments"></p>
+    <p>Aika:<br>
+    <input type="text" name="event_time"></p>
+    <p>Paikka:<br>
+    <input type="text" name="place"></p>
+    <p>Taso:<br>
+    <input type="text" name="difficulty"></p>
+    <input type="submit" value="Lisää kurssi">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    </form>
+    <br>
+    <a href="/">Etusivu</a>
+    {% endblock %}
+
+</html>

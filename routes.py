@@ -6,7 +6,8 @@ import courses
 @app.route("/")
 def index():
     course_list = courses.get_courses()
-    return render_template("index.html", course_list=course_list) 
+    allow = users.check_rights()
+    return render_template("index.html", course_list=course_list, allow=allow) 
 
 @app.route("/form") #log in
 def form():
@@ -16,7 +17,7 @@ def form():
 def create():
     return render_template("create.html")
 
-@app.route("/login",methods=["POST"])
+@app.route("/login", methods=["POST"])
 def login():
     username = request.form["username"]
     password = request.form["password"]
@@ -31,7 +32,7 @@ def logout():
     users.logout()
     return redirect("/")
 
-@app.route("/create_account",methods=["POST"])
+@app.route("/create_account", methods=["POST"])
 def create_account():
     username = request.form["username"]
     password1 = request.form["password1"]
@@ -115,3 +116,28 @@ def diary():
                 return render_template("error.html", message="Merkinnän kirjaaminen epäonnistui")
         else:
             return render_template("error.html", message="Merkinnän kirjaaminen epäonnistui, kirjoita tallennettava merkintä")
+
+@app.route("/add_course", methods=["GET", "POST"])
+def add_course():
+    if request.method == "GET":
+        if "csrf_token" not in session or session["user_rights"]!="admin":
+            abort(403)
+        return render_template("add_course.html")
+    if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+        sport = request.form["sport"]
+        course_name = request.form["course_name"]
+        instructor = request.form["instructor"]
+        max_enrollments = request.form["max_enrollments"]
+        if max_enrollments<10 or max_enrollments>100:
+            flash("Kurssin osallistujamäärä on virheellinen")
+            return render_template("add_course.html")
+        event_time = request.form["event_time"]
+        place = request.form["place"]
+        difficulty = request.form["difficulty"]
+        if courses.add_course(sport, course_name, instructor, max_enrollments, event_time, place, difficulty):
+            flash("Kurssin lisääminen onnistui")
+            return redirect("/")
+        else:
+            return render_template("error.html", message="Kurssin lisääminen epäonnistui")
