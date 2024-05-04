@@ -91,3 +91,12 @@ def add_course(sport, course_name, instructor, max_enrollments, event_time, plac
     except:
         return False
     return True
+
+def remove_course(id):
+    try:
+        sql = text("DELETE FROM courses WHERE id=:id")
+        db.session.execute(sql, {"id":id})
+        db.session.commit()
+    except:
+        return False
+    return True

@@ -130,9 +130,9 @@ def add_course():
         course_name = request.form["course_name"]
         instructor = request.form["instructor"]
         max_enrollments = request.form["max_enrollments"]
-        if max_enrollments<10 or max_enrollments>100:
-            flash("Kurssin osallistujamäärä on virheellinen")
-            return render_template("add_course.html")
+        # if max_enrollments<10 or max_enrollments>100:
+        #     flash("Kurssin osallistujamäärä on virheellinen")
+        #     return render_template("add_course.html")
         event_time = request.form["event_time"]
         place = request.form["place"]
         difficulty = request.form["difficulty"]
@@ -141,3 +141,13 @@ def add_course():
             return redirect("/")
         else:
             return render_template("error.html", message="Kurssin lisääminen epäonnistui")
+        
+@app.route("/remove_course/<int:id>")
+def remove_course(id):
+    if "csrf_token" not in session or session["user_rights"]!="admin":
+        abort(403)
+    if courses.remove_course(id):
+        flash("Kurssin poistaminen onnistui")
+        return redirect("/")
+    else:
+        return render_template("error.html", message="Kurssin poistaminen epäonnistui")

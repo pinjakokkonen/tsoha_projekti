@@ -33,7 +33,11 @@
       <th>Taso</th>
       <th>Paikkamäärä</th>
       {% if session.username %}
+      {% if allow %}
+      <th>Poista kurssi</th>
+      {% else %}
       <th>Ilmoittautuminen</th>
+      {% endif %}
       {% endif %}
       <th>Arvostelut</th>
     </tr>
@@ -44,12 +48,16 @@
       <td>{{course.place}}</td>
       <td>{{course.difficulty}}</td>
       <td>{{course.enroll_count}}/{{course.max_enrollments}}</td>
-      {% if session.username %}      
+      {% if session.username %}
+      {% if allow %}
+      <td><a href="/remove_course/{{course.id}}">poista</a></td>
+      {% else %}
         {% if course.course_id == None %}
           <td><a href="/enroll/{{course.id}}">Ilmoittaudu</a></td>
         {% else %}
           <td><a href="/unenroll/{{course.id}}">Peru ilmoittautuminen</a></td>
-        {% endif %}  
+        {% endif %}
+      {% endif %}  
       {% endif %}
       <td><a href="/feedback/{{course.id}}">Arvostelut</a></td>
     </tr>
