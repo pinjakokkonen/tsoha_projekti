@@ -11,11 +11,11 @@
     <h3>Luo käyttäjätunnus</h3>
     <form action="/create_account" method="POST" onsubmit="return check(this)">
     <p>Tunnus:<br>
-    <input type="text" name="username"></p>
+    <input type="text" name="username" required ></p>
     <p>Salasana (vähintään 8 merkkiä):<br>
-    <input type="password" name="password1"></p>
+    <input type="password" name="password1" required ></p>
     <p>Salasana uudelleen:<br>
-    <input type="password" name="password2"></p>
+    <input type="password" name="password2" required ></p>
     <input type="submit" value="Luo tunnus">
     </form>
     <br>

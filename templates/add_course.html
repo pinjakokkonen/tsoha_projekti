@@ -11,19 +11,19 @@
     <h3>Lisää kurssi</h3>
     <form action="/add_course" method="POST">
     <p>Lajityyppi:<br>
-    <input type="text" name="sport"></p>
+    <input type="text" name="sport" required ></p>
     <p>Kurssin nimi:<br>
-    <input type="text" name="course_name"></p>
+    <input type="text" name="course_name" required ></p>
     <p>Ohjaaja:<br>
-    <input type="text" name="instructor"></p>
+    <input type="text" name="instructor" required ></p>
     <p>Maksimi osallistujamäärä:<br>
     <input type="number" min="10" max="100" name="max_enrollments"></p>
     <p>Aika:<br>
-    <input type="text" name="event_time"></p>
+    <input type="text" name="event_time" required ></p>
     <p>Paikka:<br>
-    <input type="text" name="place"></p>
+    <input type="text" name="place" required ></p>
     <p>Taso:<br>
-    <input type="text" name="difficulty"></p>
+    <input type="text" name="difficulty" required ></p>
     <input type="submit" value="Lisää kurssi">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     </form>

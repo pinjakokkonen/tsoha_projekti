@@ -10,12 +10,13 @@
   {% block body %}
     <h3>Arvostelut: {{course.course_name}}</h3>
     {% for feedback in feedback_list %}
+    {{feedback.created_at.strftime("%Y-%m-%d %H:%M")}}<br>
     {{feedback.content}}<hr>
     {% endfor %}
     {% if session.username %}
     <form action="/feedback/{{course.id}}" method="POST">
         Arvostelu: <br>
-        <textarea name="content" rows="5" col="50"></textarea>
+        <textarea name="content" rows="5" col="50" required ></textarea>
         <br>
         <input type="submit" value="Lähetä">
         <input type="hidden" name="id" value="{{ id }}">

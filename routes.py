@@ -52,7 +52,7 @@ def create_account():
 @app.route("/enroll/<int:id>", methods=["GET", "POST"])
 def enroll(id):
     if request.method == "GET":
-        if "csrf_token" not in session:
+        if "csrf_token" not in session or session["user_rights"]=="admin":
             abort(403)
         course = courses.get_course(id)
         return render_template("enroll.html", id=id, course=course)
@@ -66,7 +66,7 @@ def enroll(id):
 
 @app.route("/unenroll/<int:id>")
 def unenroll(id):
-    if "csrf_token" not in session:
+    if "csrf_token" not in session or session["user_rights"]=="admin":
         abort(403)
     if courses.undo_enroll(id):
         return redirect("/")

@@ -16,7 +16,7 @@
     {% endfor %}
     <form action="/diary" method="POST">
         Uusi merkintä: <br>
-        <textarea name="content" rows="5" col="50"></textarea>
+        <textarea name="content" rows="5" col="50" required ></textarea>
         <br>
         <input type="submit" value="Lähetä">
         <input type="hidden" name="id" value="{{ id }}">
