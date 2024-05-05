@@ -32,6 +32,7 @@ CREATE TABLE feedback (
     id SERIAL PRIMARY KEY,
     course_id INTEGER REFERENCES courses, 
     user_id INTEGER REFERENCES users,
+    username TEXT NOT NULL,
     created_at TIMESTAMP,
     content TEXT NOT NULL
     );

@@ -11,6 +11,7 @@
     <h3>Arvostelut: {{course.course_name}}</h3>
     {% for feedback in feedback_list %}
     {{feedback.created_at.strftime("%Y-%m-%d %H:%M")}}<br>
+    Lähettäjä: {{feedback.username}}<br>
     {{feedback.content}}<hr>
     {% endfor %}
     {% if session.username %}

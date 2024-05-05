@@ -30,6 +30,7 @@ def login():
 @app.route("/logout")
 def logout():
     users.logout()
+    flash("Uloskirjautuminen onnistui")
     return redirect("/")
 
 @app.route("/create_account", methods=["POST"])
@@ -83,8 +84,9 @@ def feedbacks(id):
         if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
         content = request.form["content"]
+        username = session["username"]
         if content!="":
-            if courses.send_feedback(id, content):
+            if courses.send_feedback(id, content, username):
                 course = courses.get_course(id)
                 feedback_list = courses.get_feedback(id)
                 flash("Arvostelun tallennus onnistui")

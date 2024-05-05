@@ -54,14 +54,14 @@ def undo_enroll(id):
     return True
 
 def get_feedback(id):
-    sql = text("SELECT id, created_at, content FROM feedback WHERE course_id=:course_id")
+    sql = text("SELECT id, created_at, username, content FROM feedback WHERE course_id=:course_id")
     result = db.session.execute(sql, {"course_id":id})
     return result.fetchall()
 
-def send_feedback(id, content):
+def send_feedback(id, content, username):
     try:
-        sql = text("INSERT INTO feedback (course_id, created_at, content) VALUES (:course_id, NOW(), :content)")
-        db.session.execute(sql, {"course_id":id, "content":content})
+        sql = text("INSERT INTO feedback (course_id, username, created_at, content) VALUES (:course_id, :username, NOW(), :content)")
+        db.session.execute(sql, {"course_id":id, "username":username, "content":content})
         db.session.commit()
     except:
         return False

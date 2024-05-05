@@ -23,7 +23,9 @@
     <p>Paikka:<br>
     <input type="text" name="place" required ></p>
     <p>Taso:<br>
-    <input type="text" name="difficulty" required ></p>
+    <input type="radio" name="difficulty" value="alkeistaso" required> alkeistaso
+    <input type="radio" name="difficulty" value="keskitaso"> keskitaso
+    <input type="radio" name="difficulty" value="edistyneet"> edistyneet </p>
     <input type="submit" value="Lisää kurssi">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     </form>
