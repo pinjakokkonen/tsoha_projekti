@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <title>Liikunta sovellus</title>
+  <link rel="stylesheet" href="/static/main.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <script>
@@ -10,7 +12,20 @@
   function go_back(){window.location.href = localStorage.getItem("prev_page")};
 </script>
 
+<body>
 <h1>Liikunta sovellus</h1>
+<a href="/">Etusivu</a> |
+{% if session.username %}
+{% if session.user_rights=="admin" %}
+<a href="/add_course">Lisää kurssi</a>
+{% else %}
+<a href="/diary">Omat merkinnät</a>
+{% endif %}
+| <a href="/logout">Kirjaudu ulos</a>
+{% else %}
+<a href="form">Kirjaudu</a> |
+<a href="create">Luo tunnus</a>
+{% endif %}
 <hr>
 {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -21,5 +36,6 @@
 {% endwith %}
 {% block body %}{% endblock %}
 <hr>
+</body>
 
 </html>

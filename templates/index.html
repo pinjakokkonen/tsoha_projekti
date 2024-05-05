@@ -8,21 +8,13 @@
 
   {% extends "layout.html" %}
   {% block body %}
-    <h1>Etusivu</h1>
+    <h3>Etusivu</h3>
     <p>Tervetuloa sovellukseen!<p>
     {% if session.username %}
     <p>Olet kirjautunut nimellä {{ session.username }}</p>
-    <a href="/logout">Kirjaudu ulos</a> <br>
     {% if allow %}
     <p>Sinulla on admin oikeudet</p>
-    <a href="/add_course">Lisää kurssi</a> <br>
-    {% else %}
-    <a href="/">Omat kurssit</a> <br>
-    <a href="/diary">Omat merkinnät</a> <br>
     {% endif %}
-    {% else %}
-    <a href="create">Luo tunnus</a> |
-    <a href="form">Kirjaudu</a>
     {% endif %}
     <p>Kurssi tarjonta:</p>
     <form action="/search" method="GET">
