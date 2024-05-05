@@ -14,18 +14,22 @@
 
 <body>
 <h1>Liikunta sovellus</h1>
-<a href="/">Etusivu</a> |
-{% if session.username %}
-{% if session.user_rights=="admin" %}
-<a href="/add_course">Lisää kurssi</a>
-{% else %}
-<a href="/diary">Omat merkinnät</a>
-{% endif %}
-| <a href="/logout">Kirjaudu ulos</a>
-{% else %}
-<a href="form">Kirjaudu</a> |
-<a href="create">Luo tunnus</a>
-{% endif %}
+<nav>
+  <ul>
+    <li><a href="/">Etusivu</a></li>
+    {% if session.username %}
+    {% if session.user_rights=="admin" %}
+    <li><a href="/add_course">Lisää kurssi</a></li>
+    {% else %}
+    <li><a href="/diary">Omat merkinnät</a></li>
+    {% endif %}
+    <li><a href="/logout">Kirjaudu ulos</a></li>
+    {% else %}
+    <li><a href="form">Kirjaudu</a></li>
+    <li><a href="create">Luo tunnus</a></li>
+    {% endif %}
+  </ul>
+</nav>
 <hr>
 {% with messages = get_flashed_messages() %}
   {% if messages %}

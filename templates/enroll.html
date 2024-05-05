@@ -11,10 +11,11 @@
     <h3>Ilmoittautuminen</h3>
     <form action="/enroll/{{course.id}}" method="POST">
         {% if session.username %}
-        {{course.course_name}} <br>
-        {{course.event_time}}<br>
-        {{course.place}}<br>
-        {{course.difficulty}}<br>
+        Kurssi: {{course.course_name}} <br>
+        Ohjaaja: {{course.instructor}} <br> 
+        Aika: {{course.event_time}} <br>
+        Paikka: {{course.place}} <br>
+        Taso: {{course.difficulty}} <br>
         <input type="submit" value="Ilmoittaudu">
         <input type="hidden" name="id" value="{{ id }}">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">

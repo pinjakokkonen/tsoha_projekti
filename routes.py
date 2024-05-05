@@ -25,7 +25,8 @@ def login():
     if users.login(username, password):
         return redirect("/")
     else:
-        return render_template("error.html", message="Väärä tunnus tai salasana")
+        flash("Väärä tunnus tai salasana")
+        return render_template("form.html")
 
 @app.route("/logout")
 def logout():
@@ -44,11 +45,14 @@ def create_account():
                 flash("Käyttäjätunnuksen luominen onnistui")
                 return redirect("/")
             else:
-                return render_template("error.html", message="Tunnuksen luominen epäonnistui")
+                flash("Käyttäjätunnus on jo olemassa")
+                return render_template("create.html")
         else:
-            return render_template("error.html", message="Salasana on liian lyhyt")
+            flash("Salasana on liian lyhyt")
+            return render_template("create.html")
     else:
-        return render_template("error.html", message="Salasanat eroavat")
+        flash("Salasanat eroavat, kokeile uudelleen")
+        return render_template("create.html")
     
 @app.route("/enroll/<int:id>", methods=["GET", "POST"])
 def enroll(id):
@@ -99,7 +103,7 @@ def feedbacks(id):
 @app.route("/diary", methods=["GET", "POST"])
 def diary():
     if request.method == "GET":
-        if "csrf_token" not in session:
+        if "csrf_token" not in session or session["user_rights"]=="admin":
             abort(403)
         user_id = session["user_id"]
         diary_list = courses.get_diary()

@@ -19,7 +19,7 @@ def get_courses():
         return result.fetchall()
 
 def get_course(id):
-    sql = text("SELECT id, course_name, max_enrollments, event_time, place, difficulty FROM courses WHERE id=:id")
+    sql = text("SELECT id, course_name, instructor, max_enrollments, event_time, place, difficulty FROM courses WHERE id=:id")
     result = db.session.execute(sql, {"id":id})
     return result.fetchone()
 

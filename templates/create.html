@@ -11,7 +11,7 @@
     <h3>Luo käyttäjätunnus</h3>
     <form action="/create_account" method="POST" onsubmit="return check(this)">
     <p>Tunnus:<br>
-    <input type="text" name="username" required ></p>
+    <input type="text" name="username" required minlength="5"></p>
     <p>Salasana (vähintään 8 merkkiä):<br>
     <input type="password" name="password1" required ></p>
     <p>Salasana uudelleen:<br>
